@@ -1,25 +1,25 @@
-import java.io.File;
-import java.util.Scanner;
+package faturamento;
+
 import org.json.JSONArray;
-import org.json.JSONException;
-import org.json.JSONObject;
-import org.json.XML;
+
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Paths;
 
 public class Faturamento {
-    public static void main(String[] args) {
+    public static void main(String[] args) throws IOException {
 
-        String fileContent = new Scanner(new File("banco.json")).useDelimiter("\\Z").next();
-        JSONObject jsonObject = new JSONObject(fileContent);
-        JSONArray jsonArray = jsonObject.getJSONArray("faturamentoDiario");
+        String jsonString = new String(Files.readAllBytes(Paths.get("C:\\Users\\Pedro\\Downloads\\dados.json")));
+        JSONArray jsonArray = new JSONArray(jsonString);
 
         int soma = 0;
         int qntDiasFaturamento = 0;
-        int menorFaturamento = Double.MIN_VALUE;
-        int maiorFaturamento = Double.MAX_VALUE;
+        double menorFaturamento = Double.MIN_VALUE;
+        double maiorFaturamento = Double.MAX_VALUE;
 
         for (int i = 0; i < jsonArray.length(); i++){
-            Double faturamento = jsonArray.getDouble(i);
-            if (faturamento!= null && faturamento > 0){
+            double faturamento = jsonArray.getDouble(i);
+            if (faturamento > 0){
                 soma+= faturamento;
                 qntDiasFaturamento++;
             }
@@ -35,8 +35,8 @@ public class Faturamento {
 
         int qntDiasAcimaMedia = 0;
         for (int i = 0; i < jsonArray.length(); i++){
-            Double faturamento = jsonArray.getDouble(i);
-            if (faturamento != null && faturamento>mediaMensal){
+            double faturamento = jsonArray.getDouble(i);
+            if (faturamento>mediaMensal){
                 qntDiasAcimaMedia++;
             }
         }
